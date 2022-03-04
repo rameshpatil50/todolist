@@ -8,33 +8,23 @@
     
     <div class="card-body">
     <ul class="todo-list ui-sortable" data-widget="todo-list">
-    <li>    
+    <li *ngFor="let todoitem of this._state.todolist, let i = index">    
     <div class="icheck-primary d-inline ml-2">
-    <input type="checkbox" value="" name="todo1" id="todoCheck1">
+    <input type="checkbox" value="" name="todo1" id="todoCheck1" [checked]="todoitem['is_done'] == 1">
     <label for="todoCheck1"></label>
     </div>
-    <span class="text">Design a nice theme</span>    
+    <!--todo text-->
+    <span class="text">{{todoitem['task']}}</span>    
     <div class="tools">
-    <i class="fas fa-edit"></i>
-    <i class="fas fa-trash"></i>
+    <i [routerLink]="['/home', 'edit', i]" class="fas fa-edit"></i>
+    <i (click)="delete(i)" class="fas fa-trash"></i>
     </div>
-    </li>
-    <li>
-    <div class="icheck-primary d-inline ml-2">
-    <input type="checkbox" value="" name="todo3" id="todoCheck3">
-    <label for="todoCheck3"></label>
-    </div>
-    <span class="text">Let theme shine like a star</span>
-    <div class="tools">
-    <i class="fas fa-edit"></i>
-    <i class="fas fa-trash"></i>
-    </div>
-    </li>
-   
+    </li>   
     </ul>
     </div>
-    
     <div class="card-footer clearfix">
-    <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</button>
+    <button [routerLink]="['/home', 'add']" type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</button>
     </div>
     </div>
+
+    

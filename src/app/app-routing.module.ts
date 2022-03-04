@@ -11,7 +11,7 @@ const routes: Routes = [
   children: [
     { path: '', redirectTo: 'todolist',pathMatch: 'full'},
     { path: 'add', component: AddtodoComponent},
-    { path: 'edit', component: EdittodoComponent},
+    { path: 'edit/:index', component: EdittodoComponent},
     { path: 'todolist', component: TodolistComponent},
     { path: '**', redirectTo: 'todolist'}
    ] },
