@@ -17,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { TodolistComponent } from './todolist/todolist.component';
 import { EdittodoComponent } from './home/edittodo/edittodo.component';
 import { AddtodoComponent } from './home/addtodo/addtodo.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AddtodoComponent } from './home/addtodo/addtodo.component';
     HomeComponent,
     TodolistComponent,
     EdittodoComponent,
-    AddtodoComponent
+    AddtodoComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

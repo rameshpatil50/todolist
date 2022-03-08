@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StateService {
-todolist = [];
+  username = '';
+  user_info : any;
+  todolist = [];
   constructor() { }
 }

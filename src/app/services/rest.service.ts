@@ -9,6 +9,12 @@ export class RestService {
 
   constructor(private _http: HttpClient) { }
 
+
+login(data:any){
+  const url = environment.server_url + 'login';
+  return this._http.post(url, data);
+}
+
 getAllTodo(){
   const url = environment.server_url + 'get_todo';
   return this._http.get(url);
@@ -28,4 +34,10 @@ delete(data:any){
   const url = environment.server_url + 'delete_task';
   return this._http.post(url, data);
 }
+
+done(data:any){
+  const url = environment.server_url + 'done_task';
+  return this._http.post(url, data);
+}
+
 }

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddtodoComponent } from './home/addtodo/addtodo.component';
 import { EdittodoComponent } from './home/edittodo/edittodo.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { TodolistComponent } from './todolist/todolist.component';
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: 'todolist', component: TodolistComponent},
     { path: '**', redirectTo: 'todolist'}
    ] },
+   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: 'todolist' }
 ];
 

@@ -18,6 +18,21 @@ export class TodolistComponent implements OnInit {
     this.get_tasks();
   }
 
+  markdone(e: any, id: number) {
+    console.log(id, e);
+    let status;
+    if(e.target.checked === true){
+      status = 1; 
+    } else {
+      status = 0
+    }
+    this._rest.done({ id: id, is_done: status}).subscribe(resp => {
+      console.log(resp);
+    } ,err => {
+      console.log(err);
+    })
+  }
+  
   delete(i:number) {
     if (confirm('Are you sure?')) {
       this._rest.delete({ id: this._state.todolist[i]['id'] }).subscribe(

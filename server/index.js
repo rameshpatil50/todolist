@@ -1,9 +1,9 @@
-// get the client
+// get the client555
 const mysql = require('mysql2');
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
 var bodyParser = require('body-parser');
-const { request } = require('http');
+const jwt = require('jsonwebtoken');
 const app = express();
 
 app.use(cors());
@@ -18,12 +18,52 @@ const connection = mysql.createConnection({
 
   connection.connect((err) => {
       if(err){
-          console.log(err)
+          console.log(err);
           process.exit();
       } else {
-          console.log("Database Connected")
+          console.log("Database Connected");
       }
   });
+
+app.post('/login', (req, resp) => {
+    console.log(req.body);
+    const username = req.body.username;
+    const password = req.body.password;
+    const sql = `SELECT * FROM user WHERE username ='${username}' AND password = '${password}'`;
+    connection.query(sql, (err, result) => {
+        if(err != null){
+            console.log(err);
+            resp.status(500).send({
+                success : false,
+                message : "Internal Error",
+                data : err.message
+            });
+        } else {
+               console.log(result);
+               if(result.length == 1){
+                   const token = jwt.sign({
+                       username : result[0].username,
+                       full_name : result[0].full_name,
+                       is : result[0].id
+                   }, 'octaedge', {
+                        expiresIn : '1w'
+                   })
+                resp.status(200).send({
+                    success : true,
+                    message : 'Login Success',
+                    data : token
+                });    
+               } else {           
+                resp.status(404).send({
+                success : false,
+                message : 'Login Failed',
+                data : result          
+            });
+        }
+    }
+    });
+});
+
 
   app.get('/get_todo', (request, responce) => {
     const query = "SELECT * FROM list";
@@ -40,7 +80,7 @@ app.post('/add_task', (request, responce) => {
             console.log(error);
             responce.status(500).send({
                 success: false,
-                msg: error
+                msg: "error"
             });
         } else {
             if (result.affectedRows) {
@@ -67,7 +107,7 @@ app.post('/update_task', (request, responce) =>  {
           console.log(err);
           responce.send(500).send({
               success : false,
-              msg : err
+              msg : "error"
           });
       } else {
           if(result.affectedRows === 1){
@@ -93,7 +133,7 @@ app.post('/delete_task', (request, responce) =>  {
           console.log(err);
           responce.send(500).send({
               success : false,
-              msg : err
+              msg : "error"
           });
       } else {
           if(result.affectedRows === 1){
@@ -110,5 +150,33 @@ app.post('/delete_task', (request, responce) =>  {
         }
   })
 })
+
+app.post('/done_task', (request, responce) => {
+    const id = request.body.id;
+    const is_done = request.body.is_done;
+    const query = `UPDATE list SET is_done = '${is_done}' WHERE id = ${id}`;
+    connection.query(query, (err , result) => {
+        if(err){
+            console.log(err);
+            responce.status(500).send({
+                success:false,
+                msg : "error"
+            });
+        } else {
+            if(result.affectedRows === 1){
+                responce.status(200).send({
+                    success : true,
+                    msg : "Task Done"
+                })
+            } else {
+                responce.status(400).send({
+                    success:false,
+                    msg:'Error to change task status'
+                });
+            }
+        }
+    })
+})
+
 
 app.listen(5000, () => {console.log('app is running on port 500')})
