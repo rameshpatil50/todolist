@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { RestService } from '../services/rest.service';
 
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
   loginForm : FormGroup;
 
   constructor(private _tostr: ToastrService,
-    private _rest: RestService
+    private _rest: RestService,
+    private _router: Router
     ) { 
   this.loginForm = new FormGroup({
   username: new FormControl('',[Validators.required]),
@@ -32,7 +34,8 @@ export class LoginComponent implements OnInit {
       console.log(res);
       const resp = res as any;
       if(resp.success === true){
-        localStorage.setItem('token', resp.data)
+        localStorage.setItem('token', resp.data);
+        this._router.navigate(['/home']);
       }
     }, err => {
       this._tostr.error("Invalid Username or Password");
